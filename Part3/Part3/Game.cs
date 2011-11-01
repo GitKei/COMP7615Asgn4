@@ -253,6 +253,8 @@ namespace Part3
             if (ps1.IsConnected && ps1.Buttons.Back == ButtonState.Pressed)
                     Exit();
 
+            _menu.CheckInput(ps1);
+
             // Allow player 1 to start the ball moving
             if (ps1.Buttons.A == ButtonState.Pressed)
                 _pong.StartGame();
@@ -268,6 +270,8 @@ namespace Part3
                 _pong.MovePaddle(Defs.Player.P2, Pong.Direction.UP);
             if (ps2.ThumbSticks.Left.Y < 0f)
                 _pong.MovePaddle(Defs.Player.P2, Pong.Direction.DOWN);
+
+            
         }
 
         /// <summary>

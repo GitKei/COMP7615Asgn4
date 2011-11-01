@@ -18,6 +18,7 @@ namespace Part3
 
         List<string> _highScores;
         KeyboardState _oldKeys;
+        GamePadState _oldPad;
 
         /// <summary>
         /// Constructor; initializes the console.
@@ -84,6 +85,28 @@ namespace Part3
             }
 
             _oldKeys = kbs;;
+        }
+
+        /// <summary>
+        /// Call this method when input is received to have the console react to the user's commands.
+        /// </summary>
+        /// <param name="kbs">The current keyboard state.</param>
+        /// <returns>The Command that corresponds to the user's input.</returns>
+        public void CheckInput(GamePadState gs)
+        {
+            if (_menuActive)
+            {
+                if (gs.IsButtonDown(Buttons.Y) && _oldPad.IsButtonUp(Buttons.Y))
+                    _menuActive = false;
+            }
+            else
+            {
+                // Should we bring the menu up?
+                if (gs.IsButtonDown(Buttons.Y) && _oldPad.IsButtonUp(Buttons.Y))
+                    _menuActive = true;
+            }
+
+            _oldPad = gs;
         }
 
         /// <summary>
