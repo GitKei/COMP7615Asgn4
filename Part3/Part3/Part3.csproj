@@ -114,6 +114,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="Defs.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Paddle.cs" />
     <Compile Include="Pong.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

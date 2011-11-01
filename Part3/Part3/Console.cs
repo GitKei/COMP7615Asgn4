@@ -167,6 +167,9 @@ namespace Part3
         /// <param name="sb">The spritebatch to add draw commands to.</param>
         public void Draw(int scrWidth, int scrHeight, SpriteBatch sb)
         {
+            if (!_consoleActive)
+                return;
+
             Rectangle cRect = new Rectangle(10, scrHeight / 2 + 10, scrWidth - 20, scrHeight / 2 - 20);
             Texture2D tex = new Texture2D(_gd, cRect.Width, cRect.Height);
             int texSize = tex.Width * tex.Height;
