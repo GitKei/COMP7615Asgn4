@@ -32,6 +32,11 @@ namespace Part3
             _highScores = new List<string>();
         }
 
+        /// <summary>
+        /// Call this method to read the scores out of the specified stream.
+        /// </summary>
+        /// <param name="scores">The stream to parse.</param>
+        /// <returns>A list of the scores read.</returns>
         public List<string> ParseScores(Stream scores)
         {
             List<string> result = new List<string>();
@@ -49,6 +54,10 @@ namespace Part3
             return result;
         }
 
+        /// <summary>
+        /// Call this method to update the High Score list of the menue.
+        /// </summary>
+        /// <param name="scores">The stream to parse.</param>
         public void SetScores(Stream scores)
         {
             using (StreamReader sr = new StreamReader(scores))

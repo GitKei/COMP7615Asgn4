@@ -49,6 +49,8 @@ namespace Part3
             Content.RootDirectory = "Content";
 
             this.Components.Add(new GamerServicesComponent(this));
+            // Respond to the SignedInGamer event
+            SignedInGamer.SignedIn += new EventHandler<SignedInEventArgs>(SignedInGamer_SignedIn);
         }
 
         /// <summary>
@@ -138,9 +140,9 @@ namespace Part3
                     if (highScore > prevHigh)
                     {
                         if (_pong._scoreP1 > _pong._scoreP2)
-                            sw.WriteLine("Player1: {0}", _pong._scoreP1.ToString());
+                            sw.WriteLine(_pong._nameP1 + ": {0}", _pong._scoreP1.ToString());
                         else
-                            sw.WriteLine("Player2: {0}", _pong._scoreP2.ToString());
+                            sw.WriteLine(_pong._nameP2 + ": {0}", _pong._scoreP2.ToString());
 
                         ++numScores;
                         highScore = -1;
@@ -160,9 +162,9 @@ namespace Part3
                 sw = new StreamWriter(stream);
 
                 if (_pong._scoreP1 > _pong._scoreP2)
-                    sw.WriteLine("Player1: {0}", _pong._scoreP1.ToString());
+                    sw.WriteLine(_pong._nameP1 + ": {0}", _pong._scoreP1.ToString());
                 else
-                    sw.WriteLine("Player2: {0}", _pong._scoreP2.ToString());
+                    sw.WriteLine(_pong._nameP2 + ": {0}", _pong._scoreP2.ToString());
             }
 
             sw.Close();
@@ -326,8 +328,8 @@ namespace Part3
             _pong.Draw(_sb);
 
             // Draw scoreboard
-            _sb.DrawString(_font, "Player 1: " + _pong._scoreP1.ToString(), new Vector2(_scrWidth / 2 - 300, 0), Color.White);
-            _sb.DrawString(_font, "Player 2: " + _pong._scoreP2.ToString(), new Vector2(_scrWidth / 2 + 200, 0), Color.White);
+            _sb.DrawString(_font, _pong._nameP1 + ": " + _pong._scoreP1.ToString(), new Vector2(_scrWidth / 2 - 300, 0), Color.White);
+            _sb.DrawString(_font, _pong._nameP2 + ": " + _pong._scoreP2.ToString(), new Vector2(_scrWidth / 2 + 200, 0), Color.White);
 
             // Draw console
             _cs.Draw(_scrWidth, _scrHeight, _sb);
@@ -336,6 +338,11 @@ namespace Part3
             _sb.End();
 
             base.Draw(gameTime);
+        }
+
+        void SignedInGamer_SignedIn(object sender, SignedInEventArgs e)
+        {
+            _pong._nameP1 = e.Gamer.Gamertag;
         }
     }
 }

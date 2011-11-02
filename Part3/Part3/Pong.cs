@@ -20,6 +20,8 @@ namespace Part3
         public enum Direction { UP, DOWN };
 
         // Externally accessible
+        public string _nameP1 = "Player1";
+        public string _nameP2 = "Player2";
         public int _scoreP1 = 0;
         public int _scoreP2 = 0;
 
