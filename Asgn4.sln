@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P1-Pong", "P1-Pong\P1-Pong\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P1-PongContent", "P1-Pong\P1-PongContent\P1-PongContent.contentproj", "{92C04F07-BBF8-45BB-A6F4-F5957F20317F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMP7615Asgn4Part2", "COMP7615Asgn4Part2\COMP7615Asgn4Part2\COMP7615Asgn4Part2.csproj", "{6C6890D1-0C19-4868-B25C-558ADAB34ED5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMP7615Asgn4Part2Content", "COMP7615Asgn4Part2\COMP7615Asgn4Part2Content\COMP7615Asgn4Part2Content.contentproj", "{BC95CD5B-F1EA-49DF-B4F5-61B2704F0635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +21,12 @@ Global
 		{5FEE50A4-2EA2-4695-894F-981179693832}.Release|x86.Build.0 = Release|x86
 		{92C04F07-BBF8-45BB-A6F4-F5957F20317F}.Debug|x86.ActiveCfg = Debug|x86
 		{92C04F07-BBF8-45BB-A6F4-F5957F20317F}.Release|x86.ActiveCfg = Release|x86
+		{6C6890D1-0C19-4868-B25C-558ADAB34ED5}.Debug|x86.ActiveCfg = Debug|x86
+		{6C6890D1-0C19-4868-B25C-558ADAB34ED5}.Debug|x86.Build.0 = Debug|x86
+		{6C6890D1-0C19-4868-B25C-558ADAB34ED5}.Release|x86.ActiveCfg = Release|x86
+		{6C6890D1-0C19-4868-B25C-558ADAB34ED5}.Release|x86.Build.0 = Release|x86
+		{BC95CD5B-F1EA-49DF-B4F5-61B2704F0635}.Debug|x86.ActiveCfg = Debug|x86
+		{BC95CD5B-F1EA-49DF-B4F5-61B2704F0635}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
