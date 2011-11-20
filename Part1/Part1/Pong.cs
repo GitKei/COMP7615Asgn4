@@ -59,7 +59,7 @@ namespace Part1
 
             tex = content.Load<Texture2D>("Circle");
             position = new Vector2(_width / 2f, _height / 2f);
-            _ball = new Ball(tex, position, _world);
+            _ball = new Ball(tex, position, _world, bounce);
 
             // Set up top and bottom walls
             Vector2 startPos = new Vector2(-10, 0) / Defs.MtrInPix;

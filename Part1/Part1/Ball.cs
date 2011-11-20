@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Part1
 {
@@ -15,13 +16,15 @@ namespace Part1
     /// </summary>
     public class Ball : Shape
     {
+        SoundEffect _sound;
+
         /// <summary>
         /// Construction; initializes the ball's position and underlying physics representation.
         /// </summary>
         /// <param name="texture">The texture to apply to the ball.</param>
         /// <param name="position">The center based position of the ball.</param>
         /// <param name="world">The world in which to place the ball.</param>
-        public Ball(Texture2D texture, Vector2 position, World world) : base(texture)
+        public Ball(Texture2D texture, Vector2 position, World world, SoundEffect sound) : base(texture)
         {
             float radius = tex.Height;
             radius /= 2f;
@@ -35,6 +38,26 @@ namespace Part1
             body.BodyType = BodyType.Dynamic;
             body.Friction = 0.5f;
             body.Restitution = 1.2f;
+
+            // Set collision
+            body.OnCollision += BallCollision;
+
+            // Set sound
+            _sound = sound;
+        }
+
+        /// <summary>
+        /// Calls this method when the ball fixture collides with another body fixture.
+        /// </summary>
+        /// <param name="fixtureA">Fixture of the ball.</param>
+        /// <param name="fixtureB">Fixture that the ball contacted with.</param>
+        /// <param name="contact">Properties of the contact between the fixtures.</param>
+        /// <returns></returns>
+        bool BallCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            _sound.Play();
+
+            return true;
         }
 
         /// <summary>
