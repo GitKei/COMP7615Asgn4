@@ -10,7 +10,7 @@ namespace P1Pong
         /// </summary>
         static void Main(string[] args)
         {
-            using (Pong game = new Pong())
+            using (Game game = new Game())
             {
                 game.Run();
             }

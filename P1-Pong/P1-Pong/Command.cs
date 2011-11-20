@@ -14,7 +14,7 @@ namespace P1Pong
         public enum Type { BG, CHEAT, QUIT }
         public Color _color;
         public Type _type;
-        public int _player;
+        public Defs.Player _player;
 
         /// <summary>
         /// Constructor; initializes command type.

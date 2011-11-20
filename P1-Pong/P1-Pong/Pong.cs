@@ -1,134 +1,134 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
 using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Factories;
-using FarseerPhysics.Dynamics.Contacts;
 
 namespace P1Pong
 {
-    /// <summary>
-    /// Steve Stanisic - Question 5
-    /// Implement commands in the Pong console.
-    /// </summary>
-    public class Pong : Microsoft.Xna.Framework.Game
+    class Pong
     {
-        // XNA related variables
-        private GraphicsDeviceManager _gdm;
-        private SpriteBatch _sb;
-        private SpriteFont _font;
+        public enum Direction { UP, DOWN };
+
+        // Externally accessible
+        public int _scoreP1 = 0;
+        public int _scoreP2 = 0;
 
         // Game related variables
+        private Pong _pong;
         private Paddle _paddle1, _paddle2;
         private Ball _ball;
-        private int _scoreP1 = 0;
-        private int _scoreP2 = 0;
         Random _rand = new Random();
         bool _gameActive = false;
-        Color _bg;
-        int _scrWidth, _scrHeight;
-        Console _cs;
+
+        int _width, _height;
+
+        // Assets
+        Song _background;
 
         // Physics related variables
         private World _world;
         private Body _top, _bot;
 
-        /// <summary>
-        /// Game constructor, set up graphics device and Content folder.
-        /// </summary>
-        public Pong()
+        public Pong(int width, int height)
         {
-            _gdm = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            _width = width;
+            _height = height;
         }
 
-        /// <summary>
-        /// Initialization of non-graphic components. All we need this for is setting the
-        /// window title.
-        /// </summary>
-        protected override void Initialize()
+        public void Init(ContentManager content)
         {
-            Window.Title = "Question 5";
+            SoundEffect bounce = content.Load<SoundEffect>("bounce");
+            _background = content.Load<Song>("background");
+            MediaPlayer.IsRepeating = true;
+
             _world = new World(Vector2.Zero); // 0 Gravity
-            base.Initialize();
-        }
-
-        /// <summary>
-        /// Load any game content here. We have a reasonable amount to set up now; we have
-        /// our game related setup as well as our 3d world and effects.
-        /// </summary>
-        protected override void LoadContent()
-        {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _sb = new SpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>("SegoeUI");
-
-            // We'll need to know our viewport height throughout
-            _scrWidth = GraphicsDevice.Viewport.Width;
-            _scrHeight = GraphicsDevice.Viewport.Height;
 
             // Set up game objets
-            Texture2D tex = Content.Load<Texture2D>("Rectangle");
-            Vector2 position = new Vector2(tex.Width / 2f, _scrHeight / 2f);
+            Texture2D tex = content.Load<Texture2D>("Rectangle");
+            Vector2 position = new Vector2(tex.Width / 2f, _height / 2f);
             _paddle1 = new Paddle(tex, position, _world);
 
-            position = new Vector2(_scrWidth - tex.Width / 2f, _scrHeight / 2f);
+            position = new Vector2(_width - tex.Width / 2f, _height / 2f);
             _paddle2 = new Paddle(tex, position, _world);
 
-            tex = Content.Load<Texture2D>("Circle");
-            position = new Vector2(_scrWidth / 2f, _scrHeight / 2f);
+            tex = content.Load<Texture2D>("Circle");
+            position = new Vector2(_width / 2f, _height / 2f);
             _ball = new Ball(tex, position, _world);
 
             // Set up top and bottom walls
             Vector2 startPos = new Vector2(-10, 0) / Defs.MtrInPix;
-            Vector2 endPos = new Vector2(_scrWidth + 10, 0) / Defs.MtrInPix;
+            Vector2 endPos = new Vector2(_width + 10, 0) / Defs.MtrInPix;
 
             _top = BodyFactory.CreateEdge(_world, startPos, endPos);
             _top.IsStatic = true;
             _top.Restitution = 0.8f;
             _top.Friction = 0f;
 
-            startPos = new Vector2(-10, _scrHeight) / Defs.MtrInPix;
-            endPos = new Vector2(_scrWidth + 10, _scrHeight) / Defs.MtrInPix;
+            startPos = new Vector2(-10, _height) / Defs.MtrInPix;
+            endPos = new Vector2(_width + 10, _height) / Defs.MtrInPix;
 
             _bot = BodyFactory.CreateEdge(_world, startPos, endPos);
             _bot.IsStatic = true;
             _bot.Restitution = 0.8f;
             _bot.Friction = 0f;
-
-            // Set up our console
-            _cs = new Console(GraphicsDevice, _font);
-            _bg = Color.Black;
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
+        public void MovePaddle(Defs.Player p, Direction d)
         {
+            Vector2 force;
+            
+            if (d == Direction.UP)
+                force = new Vector2(0, -20000);
+            else
+                force = new Vector2(0, 20000);
+
+            if (p == Defs.Player.P1)
+                _paddle1.body.ApplyForce(force);
+            else
+                _paddle2.body.ApplyForce(force);
         }
 
-        /// <summary>
-        /// Update game logic here. This is getting complicated enough that we'll break
-        /// input out into separate methods.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        public void StartGame()
         {
-            // Handle input
-            HandleGamePad();
-            HandleKeyboard();
+            if (!_gameActive)
+            {
+                _gameActive = !_gameActive;
+                Vector2 mag = Vector2.Zero;
 
+                float dir = (float)_rand.NextDouble();
+                if (dir < 0.5)
+                    mag.X -= (float)_rand.NextDouble() + 2;
+                else
+                    mag.X += (float)_rand.NextDouble() + 2;
+
+                dir = (float)_rand.NextDouble();
+                if (dir < 0.5)
+                    mag.Y -= (float)_rand.NextDouble();
+                else
+                    mag.Y += (float)_rand.NextDouble();
+
+                _ball.body.ApplyLinearImpulse(mag);
+                MediaPlayer.Play(_background);
+            }
+        }
+
+        public void AddScore(Defs.Player p)
+        {
+            if (p == Defs.Player.P1)
+                _scoreP1 += 100;
+            if (p == Defs.Player.P2)
+                _scoreP2 += 100;
+        }
+
+        public void Step(GameTime gameTime)
+        {
             // Update our physics model
             _world.Step(gameTime.ElapsedGameTime.Milliseconds * 0.001f);
 
@@ -145,159 +145,32 @@ namespace P1Pong
                     _ball.body.ApplyLinearImpulse(velocity);
                 }
             }
-            
+
             // Someone has scored
-            if (ballPos.X < 0 || ballPos.X > _scrWidth)
+            if (ballPos.X < 0 || ballPos.X > _width)
             {
                 // Tally score
                 if (ballPos.X < 0)
                     ++_scoreP2;
-                else if (ballPos.X > _scrWidth)
+                else if (ballPos.X > _width)
                     ++_scoreP1;
 
                 // Reset Objects
-                _ball.Reset(new Vector2(_scrWidth, _scrHeight) / 2f);
-                float width = _paddle1.tex.Width / 2f;
-                _paddle1.Reset(new Vector2(width, _scrHeight / 2f));
-                _paddle2.Reset(new Vector2(_scrWidth - width, _scrHeight / 2f));
+                _ball.Reset(new Vector2(_width, _height) / 2f);
+                _paddle1.Reset(new Vector2(_paddle1.tex.Width / 2f, _height / 2f));
+                _paddle2.Reset(new Vector2(_width - _paddle1.tex.Width / 2f, _height / 2f));
 
                 _gameActive = false;
+                MediaPlayer.Stop();
             }
-                
-            base.Update(gameTime);
         }
 
-        /// <summary>
-        /// Fairly self explanatory, handle gamepad input.
-        /// </summary>
-        private void HandleGamePad()
+        public void Draw(SpriteBatch sb)
         {
-            GamePadState ps1 = GamePad.GetState(PlayerIndex.One);
-            GamePadState ps2 = GamePad.GetState(PlayerIndex.Two);
-
-            if (ps1.IsConnected)
-            {
-                if (ps1.Buttons.Back == ButtonState.Pressed)
-                    Exit();
-            }
-
-            // Allow player 1 to start the ball moving
-            if (!_gameActive && ps1.Buttons.A == ButtonState.Pressed)
-            {
-                _gameActive = true;
-                Vector2 mag = Vector2.Zero;
-
-                float dir = (float)_rand.NextDouble();
-                if (dir < 0.5)
-                    mag.X -= (float)_rand.NextDouble() + 2;
-                else
-                    mag.X += (float)_rand.NextDouble() + 2;
-
-                dir = (float)_rand.NextDouble();
-                if (dir < 0.5)
-                    mag.Y -= (float)_rand.NextDouble();
-                else
-                    mag.Y += (float)_rand.NextDouble();
-
-                _ball.body.ApplyLinearImpulse(mag);
-            }
-
-            // Player 1 paddle movement
-            if (ps1.ThumbSticks.Left.Y > 0f)
-                _paddle1.body.ApplyForce(new Vector2(0, -20000));
-            if (ps1.ThumbSticks.Left.Y < 0f)
-                _paddle1.body.ApplyForce(new Vector2(0, 20000));
-
-            // Player 2 paddle movement
-            if (ps2.ThumbSticks.Left.Y > 0f)
-                _paddle2.body.ApplyForce(new Vector2(0, -20000));
-            if (ps2.ThumbSticks.Left.Y < 0f)
-                _paddle2.body.ApplyForce(new Vector2(0, 20000));
-        }
-
-        /// <summary>
-        /// Fairly self explanatory, handle keyboard input.
-        /// </summary>
-        private void HandleKeyboard()
-        {
-            KeyboardState kbState = Keyboard.GetState();
-
-            // Handle console input first
-            Command c = _cs.CheckInput(kbState);
-
-            // Check for Commands
-            if (c != null && c._type == Command.Type.QUIT)
-                this.Exit();
-            else if (c != null && c._type == Command.Type.BG)
-                _bg = c._color;
-            else if (c != null && c._type == Command.Type.CHEAT)
-            {
-                if (c._player == 1)
-                    _scoreP1 += 100;
-                if (c._player == 2)
-                    _scoreP2 += 100;
-            }
-
-            // Allow player 1 to start the ball moving
-            if (!_gameActive && kbState.IsKeyDown(Keys.Space))
-            {
-                _gameActive = true;
-                Vector2 mag = Vector2.Zero;
-
-                float dir = (float)_rand.NextDouble();
-                if (dir < 0.5)
-                    mag.X -= (float)_rand.NextDouble() + 2;
-                else
-                    mag.X += (float)_rand.NextDouble() + 2;
-
-                dir = (float)_rand.NextDouble();
-                if (dir < 0.5)
-                    mag.Y -= (float)_rand.NextDouble();
-                else
-                    mag.Y += (float)_rand.NextDouble();
-
-                _ball.body.ApplyLinearImpulse(mag);
-            }
-
-            // Player 1 paddle movement
-            if (kbState.IsKeyDown(Keys.Up))
-                _paddle1.body.ApplyForce(new Vector2(0, -20000));
-            if (kbState.IsKeyDown(Keys.Down))
-                _paddle1.body.ApplyForce(new Vector2(0, 20000));
-
-            // Player 2 paddle movement
-            if (kbState.IsKeyDown(Keys.W))
-                _paddle2.body.ApplyForce(new Vector2(0, -20000));
-            if (kbState.IsKeyDown(Keys.S))
-                _paddle2.body.ApplyForce(new Vector2(0, 20000));
-        }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(_bg);
-
-            _sb.Begin();
-
             // Draw game objects
-            _paddle1.Draw(_sb);
-            _paddle2.Draw(_sb);
-            _ball.Draw(_sb);
-
-            // Draw scoreboard
-            _sb.DrawString(_font, "Player 1: " + _scoreP1.ToString(), new Vector2(_scrWidth / 2 - 300, 0), Color.White);
-            _sb.DrawString(_font, "Player 2: " + _scoreP2.ToString(), new Vector2(_scrWidth / 2 + 200, 0), Color.White);
-
-            // Draw console
-            if (_cs._consoleActive)
-                _cs.Draw(_scrWidth, _scrHeight, _sb);
-    
-            _sb.End();
-
-            base.Draw(gameTime);
+            _paddle1.Draw(sb);
+            _paddle2.Draw(sb);
+            _ball.Draw(sb);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace P1Pong
     /// </summary>
     class Defs
     {
+        public enum Player { P1, P2 };
         public const float MtrInPix = 64f;
     }
 }

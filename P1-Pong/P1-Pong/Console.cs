@@ -18,8 +18,7 @@ namespace P1Pong
         string _commandLine;
         GraphicsDevice _gd;
         SpriteFont _sf;
-        List<Keys> _keysDown;
-        bool _dropC = false; // Used to drop the leading C when the console is first brought up.
+        KeyboardState _oldKeys;
 
         /// <summary>
         /// Constructor; initializes the console.
@@ -28,7 +27,6 @@ namespace P1Pong
         /// <param name="sf">The text font to use in the console.</param>
         public Console(GraphicsDevice gd, SpriteFont sf)
         {
-            _keysDown = new List<Keys>();
             _history = new List<string>();
             _commandLine = "pong> ";
             _gd = gd;
@@ -44,35 +42,13 @@ namespace P1Pong
         {
             Command result = null;
 
-            // Should we bring the console up?
-            if (!_consoleActive && kbs.IsKeyDown(Keys.C))
-            {
-                _consoleActive = true;
-                _dropC = true;
-                return result;
-            }
-
-            // Does the user want to quit?
-            if (!_consoleActive && kbs.IsKeyDown(Keys.Escape))
-                return new Command(Command.Type.QUIT);
-
-            List<Keys> toRemove = new List<Keys>();
-
             // Handle console input
             if (_consoleActive)
             {
-                foreach (Keys k in _keysDown)
+                foreach (Keys k in kbs.GetPressedKeys())
                 {
-                    if (kbs.IsKeyUp(k))
+                    if (_oldKeys.IsKeyUp(k))
                     {
-                        toRemove.Add(k);
-
-                        if (_dropC && k.ToString() == "C") //Drop the leading C when the console is first brought up.
-                        {
-                            _dropC = false;
-                            continue;
-                        }
-
                         switch (k.ToString())
                         {
                             case "Escape": // Close the console
@@ -109,12 +85,12 @@ namespace P1Pong
                                     case "cheat p1": // Add 100 to p1's score
                                         _history.Add("Command executed.");
                                         result = new Command(Command.Type.CHEAT);
-                                        result._player = 1;
+                                        result._player = Defs.Player.P1;
                                         break;
                                     case "cheat p2": // Add 100 to p2's score
                                         _history.Add("Command executed.");
                                         result = new Command(Command.Type.CHEAT);
-                                        result._player = 2;
+                                        result._player = Defs.Player.P2;
                                         break;
                                     default: // No idea what the user wants
                                         _history.Add("Bad command.");
@@ -161,18 +137,22 @@ namespace P1Pong
                         }
                     }
                 }
-
-                foreach (Keys k in toRemove)
-                {
-                    _keysDown.Remove(k);
-                }
-
-                foreach (Keys k in kbs.GetPressedKeys())
-                {
-                    if (!_keysDown.Contains(k))
-                        _keysDown.Add(k);
-                }
             }
+            else
+            {
+                // Should we bring the console up?
+                if (kbs.IsKeyDown(Keys.C) && _oldKeys.IsKeyUp(Keys.C))
+                {
+                    _consoleActive = true;
+                    return result;
+                }
+
+                // Does the user want to quit?
+                if (kbs.IsKeyDown(Keys.Escape) && _oldKeys.IsKeyUp(Keys.Escape))
+                    return new Command(Command.Type.QUIT);
+            }
+
+            _oldKeys = kbs;
 
             return result;
         }
