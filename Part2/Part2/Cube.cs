@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace COMP7615Asgn4Part2
+namespace Part2
 {
     /// <summary>
     /// This class represents a maze cube, including the 3D model and world position.

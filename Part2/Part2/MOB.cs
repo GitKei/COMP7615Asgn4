@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace COMP7615Asgn4Part2
+namespace Part2
 {
     class MOB
     {

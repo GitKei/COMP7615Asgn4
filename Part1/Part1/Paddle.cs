@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 
-namespace P1Pong
+namespace Part1
 {
     /// <summary>
     /// This class represents a game paddle.

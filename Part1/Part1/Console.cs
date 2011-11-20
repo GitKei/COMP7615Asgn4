@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace P1Pong
+namespace Part1
 {
     /// <summary>
     /// Class to encapsulate console functionality.
@@ -18,6 +18,7 @@ namespace P1Pong
         string _commandLine;
         GraphicsDevice _gd;
         SpriteFont _sf;
+
         KeyboardState _oldKeys;
 
         /// <summary>
@@ -144,6 +145,7 @@ namespace P1Pong
                 if (kbs.IsKeyDown(Keys.C) && _oldKeys.IsKeyUp(Keys.C))
                 {
                     _consoleActive = true;
+                    _oldKeys = kbs;
                     return result;
                 }
 

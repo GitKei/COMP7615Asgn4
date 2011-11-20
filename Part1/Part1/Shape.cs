@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using FarseerPhysics.Dynamics;
 
-namespace P1Pong
+namespace Part1
 {
     /// <summary>
     /// Basic shape class, contains a texture and physics body.

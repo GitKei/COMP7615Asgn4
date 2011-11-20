@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace COMP7615Asgn4Part2
+namespace Part2
 {
     /// <summary>
     /// This class contains the state and creation logic for the 2D Maze.

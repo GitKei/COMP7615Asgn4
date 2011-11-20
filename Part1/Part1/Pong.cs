@@ -10,7 +10,7 @@ using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Factories;
 
-namespace P1Pong
+namespace Part1
 {
     class Pong
     {
@@ -21,7 +21,6 @@ namespace P1Pong
         public int _scoreP2 = 0;
 
         // Game related variables
-        private Pong _pong;
         private Paddle _paddle1, _paddle2;
         private Ball _ball;
         Random _rand = new Random();

@@ -1,6 +1,6 @@
 using System;
 
-namespace COMP7615Asgn4Part2
+namespace Part1
 {
 #if WINDOWS || XBOX
     static class Program
@@ -10,7 +10,7 @@ namespace COMP7615Asgn4Part2
         /// </summary>
         static void Main(string[] args)
         {
-            using (Main game = new Main())
+            using (Game game = new Game())
             {
                 game.Run();
             }

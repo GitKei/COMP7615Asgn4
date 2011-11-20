@@ -14,7 +14,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics.Contacts;
 
-namespace P1Pong
+namespace Part1
 {
     /// <summary>
     /// Steve Stanisic - Question 5

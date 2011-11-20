@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P1-Pong", "P1-Pong\P1-Pong\P1-Pong.csproj", "{5FEE50A4-2EA2-4695-894F-981179693832}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Part1", "Part1\Part1\Part1.csproj", "{5FEE50A4-2EA2-4695-894F-981179693832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P1-PongContent", "P1-Pong\P1-PongContent\P1-PongContent.contentproj", "{92C04F07-BBF8-45BB-A6F4-F5957F20317F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Part1Content", "Part1\Part1Content\Part1Content.contentproj", "{92C04F07-BBF8-45BB-A6F4-F5957F20317F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMP7615Asgn4Part2", "COMP7615Asgn4Part2\COMP7615Asgn4Part2\COMP7615Asgn4Part2.csproj", "{6C6890D1-0C19-4868-B25C-558ADAB34ED5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Part2", "Part2\Part2\Part2.csproj", "{6C6890D1-0C19-4868-B25C-558ADAB34ED5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMP7615Asgn4Part2Content", "COMP7615Asgn4Part2\COMP7615Asgn4Part2Content\COMP7615Asgn4Part2Content.contentproj", "{BC95CD5B-F1EA-49DF-B4F5-61B2704F0635}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Part2Content", "Part2\Part2Content\Part2Content.contentproj", "{BC95CD5B-F1EA-49DF-B4F5-61B2704F0635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

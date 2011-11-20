@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace P1Pong
+namespace Part1
 {
     /// <summary>
     /// Basic class to hold Command types.
