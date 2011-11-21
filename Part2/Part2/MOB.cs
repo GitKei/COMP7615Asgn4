@@ -20,6 +20,7 @@ namespace Part2
         {
             soundWall = wall;
             wallCooldown = 0;
+            angleZ = 0;
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace Part2
 
             if (displacement == Vector2.Zero && wallCooldown <= 0)
             {
-                soundWall.Play(0.2f, 0.1f, 0);
+                soundWall.Play(1, 0.1f, 0);
                 wallCooldown = 60;
             }
 

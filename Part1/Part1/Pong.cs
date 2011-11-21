@@ -12,6 +12,9 @@ using FarseerPhysics.Factories;
 
 namespace Part1
 {
+    /// <summary>
+    /// This class holds the majority of the game logic for the Pong game.
+    /// </summary>
     class Pong
     {
         public enum Direction { UP, DOWN };
@@ -35,12 +38,21 @@ namespace Part1
         private World _world;
         private Body _top, _bot;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="width">Width of the viewport</param>
+        /// <param name="height">Height of the viewport</param>
         public Pong(int width, int height)
         {
             _width = width;
             _height = height;
         }
 
+        /// <summary>
+        /// Call this method during game startup to initialize the game logic.
+        /// </summary>
+        /// <param name="content">The Content Manager to load assets using.</param>
         public void Init(ContentManager content)
         {
             SoundEffect bounce = content.Load<SoundEffect>("bounce");
@@ -79,6 +91,11 @@ namespace Part1
             _bot.Friction = 0f;
         }
 
+        /// <summary>
+        /// Call this method to move a paddle.
+        /// </summary>
+        /// <param name="p">The player whose paddle needs to be moved.</param>
+        /// <param name="d">The direction to move the paddle.</param>
         public void MovePaddle(Defs.Player p, Direction d)
         {
             Vector2 force;
@@ -94,6 +111,9 @@ namespace Part1
                 _paddle2.body.ApplyForce(force);
         }
 
+        /// <summary>
+        /// Call this method to start the ball in motion.
+        /// </summary>
         public void StartGame()
         {
             if (!_gameActive)
@@ -118,6 +138,10 @@ namespace Part1
             }
         }
 
+        /// <summary>
+        /// Call this method to add 100 points to a player's score.
+        /// </summary>
+        /// <param name="p">The player to add the score to.</param>
         public void AddScore(Defs.Player p)
         {
             if (p == Defs.Player.P1)
@@ -126,6 +150,10 @@ namespace Part1
                 _scoreP2 += 100;
         }
 
+        /// <summary>
+        /// Call this method with the elapsed time to update the game's state.
+        /// </summary>
+        /// <param name="gameTime">The elapsed game time.</param>
         public void Step(GameTime gameTime)
         {
             // Update our physics model
@@ -164,6 +192,10 @@ namespace Part1
             }
         }
 
+        /// <summary>
+        /// Call this method to draw the paddles and ball to the screen.
+        /// </summary>
+        /// <param name="sb">The spritebatch to use to draw.</param>
         public void Draw(SpriteBatch sb)
         {
             // Draw game objects
