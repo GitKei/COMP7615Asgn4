@@ -52,7 +52,7 @@ namespace Part1
         /// <param name="fixtureA">Fixture of the ball.</param>
         /// <param name="fixtureB">Fixture that the ball contacted with.</param>
         /// <param name="contact">Properties of the contact between the fixtures.</param>
-        /// <returns></returns>
+        /// <returns>True that there is a collision</returns>
         bool BallCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
             _sound.Play();

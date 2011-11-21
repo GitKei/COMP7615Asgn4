@@ -155,15 +155,15 @@ namespace Part1
                 _pong.StartGame();
 
             // Player 1 paddle movement
-            if (kbState.IsKeyDown(Keys.Up))
+            if (kbState.IsKeyDown(Keys.W))
                 _pong.MovePaddle(Defs.Player.P1, Pong.Direction.UP);
-            if (kbState.IsKeyDown(Keys.Down))
+            if (kbState.IsKeyDown(Keys.S))
                 _pong.MovePaddle(Defs.Player.P1, Pong.Direction.DOWN); ;
 
             // Player 2 paddle movement
-            if (kbState.IsKeyDown(Keys.W))
+            if (kbState.IsKeyDown(Keys.Up))
                 _pong.MovePaddle(Defs.Player.P2, Pong.Direction.UP);
-            if (kbState.IsKeyDown(Keys.S))
+            if (kbState.IsKeyDown(Keys.Down))
                 _pong.MovePaddle(Defs.Player.P2, Pong.Direction.DOWN);
         }
 
