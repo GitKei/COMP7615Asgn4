@@ -35,11 +35,13 @@ namespace Part2
         bool isDay;
         bool isClip;
         bool isFlash;
+        bool isMusic;
 
         // Cube
         List<Cube> cubes;
         Model cubeModel;
 
+        // Mobile Objects
         MOB player;
         MOB cartman;
 
@@ -58,6 +60,16 @@ namespace Part2
         Texture2D flashTexture;
         Vector2 flashPosition;
 
+        // Music
+        Song musicDay;
+        Song musicNight;
+
+        // Sounds
+        int walkFrames;
+        bool isMove;
+        SoundEffect soundStep;
+
+        // Key States
         KeyboardState ksOld;
         GamePadState gsOld;
 
@@ -81,6 +93,10 @@ namespace Part2
             isFog = false;
             isClip = false;
             isDay = true;
+            isMusic = false;
+
+            MediaPlayer.Play(musicDay);
+            MediaPlayer.Stop();
 
             Mouse.SetPosition(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
             originalMouse = Mouse.GetState();
@@ -97,7 +113,7 @@ namespace Part2
             // Generate Maze
             maze = new Maze(Content.Load<Texture2D>("Images/White"), Content.Load<Texture2D>("Images/Black"), Content.Load<Texture2D>("Images/Red"));
 
-            player = new MOB();
+            player = new MOB(Content.Load<SoundEffect>("Sounds/Wall"));
             cartman = new MOB();
 
             // Load Cartman
@@ -115,6 +131,15 @@ namespace Part2
 
             flashPosition = new Vector2(this.Window.ClientBounds.Width / 2 - flashTexture.Width / 2,
                                         this.Window.ClientBounds.Height / 2 - flashTexture.Height / 2);
+
+            // Music
+            musicDay = Content.Load<Song>("Sounds/Day");
+            musicNight = Content.Load<Song>("Sounds/Night");
+
+            // Walking
+            soundStep = Content.Load<SoundEffect>("Sounds/Step");
+            walkFrames = 30;
+            isMove = false;
             
             // Set up WVP Matrices
             world = Matrix.Identity;
@@ -207,7 +232,27 @@ namespace Part2
 
             // Toggle Day/Night
             if ((ks.IsKeyDown(Keys.L) && ksOld.IsKeyUp(Keys.L)) || (gs.Buttons.X == ButtonState.Pressed && gsOld.Buttons.X == ButtonState.Released))
+            {
                 isDay = !isDay;
+
+                if (isMusic)
+                {
+                    if (isDay)
+                        MediaPlayer.Play(musicDay);
+                    else
+                        MediaPlayer.Play(musicNight);
+                }
+            }
+
+            if ((ks.IsKeyDown(Keys.B) && ksOld.IsKeyUp(Keys.B)) || (gs.DPad.Down == ButtonState.Pressed && gsOld.DPad.Down == ButtonState.Released))
+            {
+                isMusic = !isMusic;
+
+                if (isMusic)
+                    MediaPlayer.Resume();
+                else
+                    MediaPlayer.Pause();
+            }
 
             // Toggle Clipping
             if ((ks.IsKeyDown(Keys.C) && ksOld.IsKeyUp(Keys.C)) || (gs.Buttons.Y == ButtonState.Pressed && gsOld.Buttons.Y == ButtonState.Released))
@@ -227,13 +272,43 @@ namespace Part2
              
             // Do Movement
             if (ks.IsKeyDown(Keys.W) || gs.ThumbSticks.Left.Y > 0)
+            {
                 player.Move(Defs.Move.Forward, isClip, cubes);
-            if (ks.IsKeyDown(Keys.S) || gs.ThumbSticks.Left.Y < 0)
+                isMove = true;
+            }
+            else if (ks.IsKeyDown(Keys.S) || gs.ThumbSticks.Left.Y < 0)
+            {
                 player.Move(Defs.Move.Backward, isClip, cubes);
+                isMove = true;
+            }
+
             if (ks.IsKeyDown(Keys.A) || gs.ThumbSticks.Left.X < 0)
+            {
                 player.Move(Defs.Move.Left, isClip, cubes);
-            if (ks.IsKeyDown(Keys.D) || gs.ThumbSticks.Left.X > 0)
+                isMove = true;
+            }
+            else if (ks.IsKeyDown(Keys.D) || gs.ThumbSticks.Left.X > 0)
+            {
                 player.Move(Defs.Move.Right, isClip, cubes);
+                isMove = true;
+            }
+
+
+            if (isMove)
+            {
+                if (walkFrames > 0)
+                    walkFrames--;
+
+                if (soundStep != null && walkFrames <= 0)
+                {
+                    walkFrames = 27;
+                    soundStep.Play(0.2f, 0.2f, 0);
+                }
+
+                isMove = false;
+            }
+
+            SetVolume();
 
             // Set Previous KeyboardState
             ksOld = ks;
@@ -421,6 +496,26 @@ namespace Part2
             cartman.transX = (Defs.MapWidth - 1) * 2 - 2.5f;
             cartman.transZ = (Defs.MapHeight - 2) * 2;
             cartmanMoveFrames = 0;
+        }
+
+        /// <summary>
+        /// Set volume of music based on distance between the player and enemy.
+        /// </summary>
+        private void SetVolume()
+        {
+            Vector2 playerPos = new Vector2(-player.transX, -player.transZ);
+            Vector2 cartmanPos = new Vector2(cartman.transX, cartman.transZ);
+
+            Vector2 distance = cartmanPos - playerPos;
+
+            float volume = 1 - (distance.Length() / 10);
+
+            volume = MathHelper.Clamp(volume, 0.2f, 1f);
+
+            if (isFog)
+                MediaPlayer.Volume = volume / 2;
+            else
+                MediaPlayer.Volume = volume;
         }
     }
 }

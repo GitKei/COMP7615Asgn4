@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Part2
 {
@@ -10,6 +11,16 @@ namespace Part2
     {
         public float angleX, angleY, angleZ; // The facing of the MOB
         public float transX, transZ; // The position of the MOB
+        private SoundEffect soundWall;
+        private int wallCooldown;
+
+        public MOB(){}
+
+        public MOB(SoundEffect wall)
+        {
+            soundWall = wall;
+            wallCooldown = 0;
+        }
 
         /// <summary>
         /// Call this method when clipping is on to see if the desired movement would run into a wall.
@@ -33,6 +44,15 @@ namespace Part2
                     displacement.X = 0;
                     displacement.Y = 0;
                 }
+            }
+
+            if (wallCooldown > 0)
+                wallCooldown--;
+
+            if (displacement == Vector2.Zero && wallCooldown <= 0)
+            {
+                soundWall.Play(0.2f, 0.1f, 0);
+                wallCooldown = 60;
             }
 
             return displacement;
@@ -65,6 +85,7 @@ namespace Part2
                         transX -= displacement.X;
                         transZ += displacement.Y;
                     }
+
                     break;
                 case Defs.Move.Backward:
                     xPart = (float)Math.Sin(angleX) * 0.05f;
