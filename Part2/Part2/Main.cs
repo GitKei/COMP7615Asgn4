@@ -242,6 +242,19 @@ namespace Part2
                     else
                         MediaPlayer.Play(musicNight);
                 }
+                else
+                {
+                    if (isDay)
+                    {
+                        MediaPlayer.Play(musicDay);
+                        MediaPlayer.Stop();
+                    }
+                    else
+                    {
+                        MediaPlayer.Play(musicNight);
+                        MediaPlayer.Stop();
+                    }
+                }
             }
 
             if ((ks.IsKeyDown(Keys.B) && ksOld.IsKeyUp(Keys.B)) || (gs.DPad.Down == ButtonState.Pressed && gsOld.DPad.Down == ButtonState.Released))
