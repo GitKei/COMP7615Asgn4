@@ -15,17 +15,26 @@
 
 \section{Introduction}
 
-This is a simple randomly generated maze. Each maze wall is a 3D cube with a single texture wrapped to make each face different.
-The Cartman model was provided by ideasman42@gmail.com via Blender free samples.  The enemy, Cartman will follow a simple patrol near the exit of the maze.
+Part 1: Pong with Sound \\
+The background music is recycled from Spoon's adventure and will play any time the ball is in play. The bounce sound will play any time the ball bounces off a paddle or wall. \\
+\\
+Part 2: Maze Reloaded \\
+A footstep sound has been added to play any time the user is moving, as has a "faceplant" sound any time the user collides with a wall. The user can now press the B key or Dpad Down
+on the gamepad to toggle background music on/off. The music will change to a different piece if the user toggles day/night and will be attenuated if fog is toggled on. Finally, the music volume
+is also modulated based on the user's distance to Cartman. \\
+\\
+Part 3: Pong Reloaded \\
+A simple high-score system has been added. The menu can be displayed by pressing the M key or Y on the gamepad. The player who wins will have their score added to the list if it is
+high enough and the score is saved between games.  Additionally, if a player is signed in to Live, their name will be used for player 1 and they could make it on to the high score list. \\
 \\
 \\
-The controls are as follows: \\
-\\
+\section{Controls for Maze Reloaded}
 Keyboard and Mouse: \\
 ESC - Exit \\
 WASD - Movement \\
 Arrow Keys or Mouse - Camera \\
 Plus and Minus (not numpad) - Zoom in out (implemented like sample) \\
+B - Background music toggle \\
 M - Minimap toggle \\
 G - Fog toggle \\
 F - Flashlight toggle \\
@@ -40,6 +49,7 @@ Left Stick - Movement \\
 Right Stick - Camera \\
 Left and Right Triggers - Zoom in out (implemented like sample) \\
 Start - Minimap toggle \\
+Dpad Down - Background music toggle \\
 A - Fog toggle \\
 B - Flashlight toggle \\
 X - Day/Night toggle \\
