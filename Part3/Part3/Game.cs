@@ -134,7 +134,7 @@ namespace Part3
                     string[] sarray = s.Split(delim);
                     int prevHigh = int.Parse(sarray[1]);
 
-                    if (numScores == 7)
+                    if (numScores == 10)
                         break;
 
                     if (highScore > prevHigh)
@@ -148,7 +148,7 @@ namespace Part3
                         highScore = -1;
                     }
 
-                    if (numScores == 7)
+                    if (numScores == 10)
                         break;
 
                     sw.WriteLine(s);

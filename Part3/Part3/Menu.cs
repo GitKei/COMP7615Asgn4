@@ -129,7 +129,7 @@ namespace Part3
             if (!_menuActive)
                 return;
 
-            Rectangle cRect = new Rectangle(10, scrHeight / 2 + 10, scrWidth - 20, scrHeight / 2 - 20);
+            Rectangle cRect = new Rectangle(10, scrHeight / 2 - 90, scrWidth - 20, scrHeight / 2 + 80);
             Texture2D tex = new Texture2D(_gd, cRect.Width, cRect.Height);
             int texSize = tex.Width * tex.Height;
             Color[] buff = new Color[texSize];
